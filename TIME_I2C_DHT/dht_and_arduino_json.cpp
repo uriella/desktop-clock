@@ -1,6 +1,6 @@
 #include "dht_and_arduino_json.h"
 
-void updateTemperature(DHT dht, StaticJsonDocument<500> doc, std::ostream& output){
+void updateTemperature(DHT dht, StaticJsonDocument<500> doc){
   
     float humid = dht.readHumidity();
     float celcius = dht.readTemperature();
@@ -19,6 +19,6 @@ void updateTemperature(DHT dht, StaticJsonDocument<500> doc, std::ostream& outpu
     doc["heatIndexCelcius"] = hic;
     doc["heatIndexFahren"] = hif;
 
-    serializeJson(doc, output);
+    serializeJson(doc, Serial);
     Serial.println();
 }

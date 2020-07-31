@@ -50,7 +50,7 @@ void printFX(LiquidCrystal_I2C lcd, char text_[], int col, int row, int delayPer
         } else {
           lcd.print(text_[i+j]);
         }
-        delay(100);
+        delay(25);
       }
     }
     lcd.clear();

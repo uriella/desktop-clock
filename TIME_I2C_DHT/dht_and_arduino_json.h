@@ -4,6 +4,6 @@
 #include <DHT.h>
 #include <ArduinoJson.h>
 
-void updateTemperature(DHT dht, StaticJsonDocument<500> doc, std::ostream& output);
+void updateTemperature(DHT dht, StaticJsonDocument<500> doc);
 
 #endif
