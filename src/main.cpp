@@ -1,13 +1,18 @@
-#include <stdio.h>
-#include <string.h>
+#include <iostream>
+#include <string>
 
+#include "../include/wifi.hpp"
 #include "dht11.h"
 #include "esp_log.h"
 #include "esp_system.h"
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
 #include "nvs_flash.h"
-#include "wifi_init.h"
+
+using namespace std;
+extern "C" {
+void app_main();
+}
 
 void vTaskTemperature(void *pvParameters) {
   const TickType_t xDelay = 5000 / portTICK_PERIOD_MS;
@@ -15,16 +20,18 @@ void vTaskTemperature(void *pvParameters) {
 
   for (;;) {
     if (DHT11_read().temperature)
-      printf("Temperature is %d \n", DHT11_read().temperature);
+      cout << "Temperature is" << DHT11_read().temperature << endl;
     if (DHT11_read().humidity)
-      printf("Humidity is %d\n", DHT11_read().humidity);
-    if (DHT11_read().status) printf("Status code is %d\n", DHT11_read().status);
+      cout << "Humidity is" << DHT11_read().humidity << endl;
+    if (DHT11_read().status)
+      cout << "Status code is" << DHT11_read().status << endl;
     vTaskDelay(xDelay);
   }
 }
 
 void app_main(void) {
   // Initialize NVS
+  WiFi wifi;
   esp_err_t ret = nvs_flash_init();
   if (ret == ESP_ERR_NVS_NO_FREE_PAGES ||
       ret == ESP_ERR_NVS_NEW_VERSION_FOUND) {
@@ -33,9 +40,9 @@ void app_main(void) {
   }
   ESP_ERROR_CHECK(ret);
 
-  ESP_LOGI(WIFI_TAG, "ESP_WIFI_MODE_STA");
+  ESP_LOGI(WiFi::tag, "ESP_WIFI_MODE_STA");
 
-  wifi_init_sta();
-  xTaskCreate(vTaskTemperature, "temperature", configMINIMAL_STACK_SIZE * 3,
-              NULL, 5, NULL);
+  wifi.init();
+  // xTaskCreate(vTaskTemperature, "temperature", configMINIMAL_STACK_SIZE * 3,
+  // NULL, 5, NULL);
 }

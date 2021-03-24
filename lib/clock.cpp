@@ -1,4 +1,4 @@
-#include "clock.h"
+#include "clock.hpp"
 
 void updateTime(NTPClient timeClient, LiquidCrystal_I2C lcd, char clockTime[],
                 char date[]) {
